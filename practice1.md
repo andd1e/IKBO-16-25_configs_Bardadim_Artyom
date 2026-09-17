@@ -210,9 +210,9 @@ Full #
 ```
 
 
-## task 3
+# task 3
 
-### task
+## task
 
 Написать программу banner средствами bash для вывода текстов, как в следующем примере (размер баннера должен меняться!):
 
@@ -225,7 +225,8 @@ Full #
 
 Перед отправкой решения проверьте его в ShellCheck на предупреждения.
 
-### solution
+
+## solution
 
 ```bash
 #!/bin/env bash
@@ -251,9 +252,9 @@ echo "$str"
 ```
 
 
-## task 4
+# task 4
 
-### task
+## task
 Написать программу для вывода всех идентификаторов (по правилам C/C++ или Java) в файле (без повторений).
 
 Пример для hello.c:
@@ -261,6 +262,7 @@ echo "$str"
 h hello include int main n printf return stdio void world
 ```
 
-### solution
+
+## solution
 
 
