@@ -225,6 +225,7 @@ Full #
 
 Перед отправкой решения проверьте его в ShellCheck на предупреждения.
 
+### solution
 
 ```bash
 #!/bin/env bash
@@ -252,11 +253,14 @@ echo "$str"
 
 ## task 4
 
+### task
 Написать программу для вывода всех идентификаторов (по правилам C/C++ или Java) в файле (без повторений).
 
 Пример для hello.c:
 ```
 h hello include int main n printf return stdio void world
 ```
+
+### solution
 
 
