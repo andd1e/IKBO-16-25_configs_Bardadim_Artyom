@@ -1,6 +1,11 @@
 #!/bin/env bash
 
-file="$1"
+filename="$1"
+contents="$(<$filename)"
+no_quoted="$(echo "$contents" | perl -pe "s/\".*\"/\"\"/g")"
+# also could've used sed, but perlre  is more extensive
+echo "$no_quoted"
+# filter out contents from quotes since they're just strings
 
-grep -oP '\b(?!\d\w*)\w+\b' "$file" | xargs
-# negative lookahead since \w includes digits and the first char can't be
+echo "$no_quoted" | grep -oP '(?!\d\w*)\w+' | xargs
+# negative lookahead since \w includes digits and the first char can't be one
