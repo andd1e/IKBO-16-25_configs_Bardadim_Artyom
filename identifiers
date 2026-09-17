@@ -4,7 +4,6 @@ filename="$1"
 contents="$(<$filename)"
 no_quoted="$(echo "$contents" | perl -pe "s/\".*\"/\"\"/g")"
 # also could've used sed, but perlre  is more extensive
-echo "$no_quoted"
 # filter out contents from quotes since they're just strings
 
 echo "$no_quoted" | grep -oP '(?!\d\w*)\w+' | xargs

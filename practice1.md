@@ -10,7 +10,6 @@
 ```bash
 cat /etc/passwd | grep -oP "^[^:]+" | sort
 ```
-
 ```
 alpm
 avahi
@@ -59,13 +58,12 @@ y111e
 
 ## solution
 
-```bash
-cat /etc/protocols | awk '{print $2, $1}'
-```
-
 awk is line-oriented text processor
 in general, the syntax is like: `pattern { action }`
 
+```bash
+cat /etc/protocols | awk '{print $2, $1}'
+```
 ```
 Full #
  
@@ -228,6 +226,7 @@ Full #
 
 ## solution
 
+banner:
 ```bash
 #!/bin/env bash
 
@@ -245,6 +244,9 @@ echo "| $input |"
 echo "$str"
 ```
 
+```bash
+./banner 123
+```
 ```
 +-----+
 | 123 |
@@ -266,4 +268,31 @@ h hello include int main n printf return stdio void world
 
 ## solution
 
+identifier:
+```bash
+#!/bin/env bash
 
+file="$1"
+
+grep -oP '\b(?!\d\w*)\w+\b' "$file" | xargs
+# negative lookahead since \w includes digits and the first char can't be
+```
+
+hello.cpp:
+```cpp
+#include <iostream>
+
+int main()
+{
+    std::cout << "hello there" << std::endl;
+
+    return 0;
+}
+```
+
+```bash
+identifier hello.cpp
+```
+```
+include iostream int main std cout std endl return
+```
