@@ -2,4 +2,5 @@
 
 file="$1"
 
-grep -oP "[]+" "$file"
+grep -oP '\b(?!\d\w*)\w+\b' "$file" | xargs
+# negative lookahead since \w includes digits and the first char can't be
