@@ -1,0 +1,14 @@
+#!/bin/env bash
+
+input="$1"
+len=$(( ${#input} + 2 ))
+
+str=""
+for ((i=1; i<=len; i++)); do
+    str="${str}-"
+done
+str="+${str}+"
+
+echo "$str"
+echo "| $input |"
+echo "$str"

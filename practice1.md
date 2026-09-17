@@ -210,3 +210,53 @@ Full #
 ```
 
 
+## task 3
+
+### task
+
+Написать программу banner средствами bash для вывода текстов, как в следующем примере (размер баннера должен меняться!):
+
+```
+[root@localhost ~]# ./banner "Hello from RTU MIREA!"
++-----------------------+
+| Hello from RTU MIREA! |
++-----------------------+
+```
+
+Перед отправкой решения проверьте его в ShellCheck на предупреждения.
+
+
+```bash
+#!/bin/env bash
+
+input="$1"
+len=$(( ${#input} + 2 ))
+
+str=""
+for ((i=1; i<=len; i++)); do
+    str="${str}-"
+done
+str="+${str}+"
+
+echo "$str"
+echo "| $input |"
+echo "$str"
+```
+
+```
++-----+
+| 123 |
++-----+
+```
+
+
+## task 4
+
+Написать программу для вывода всех идентификаторов (по правилам C/C++ или Java) в файле (без повторений).
+
+Пример для hello.c:
+```
+h hello include int main n printf return stdio void world
+```
+
+
