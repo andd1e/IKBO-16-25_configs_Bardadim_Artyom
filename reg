@@ -1,0 +1,11 @@
+#!/usr/bin/env fish
+
+argparse f/filename= -- $argv
+if not set -ql _flag_filename
+    echo "Error: filename expected" >&2
+    return 1
+end
+set filename _flag_filename
+
+sudo chmod +x "$filename"
+sudo mv "$filename" /usr/bin/

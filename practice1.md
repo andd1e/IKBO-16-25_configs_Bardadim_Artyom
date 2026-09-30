@@ -296,3 +296,88 @@ identifier hello.cpp
 ```
 include iostream int main std cout std endl return
 ```
+
+
+# task 5
+
+## task
+
+Написать программу для регистрации пользовательской команды (правильные права доступа и копирование в `/usr/local/bin`).
+
+Например, пусть программа называется `reg`:
+```bash
+./reg banner
+```
+
+В результате для banner задаются правильные права доступа и сам banner копируется в `/usr/local/bin`.
+
+
+## solution
+
+В качестве командной оболочки была выбрана `fish` за более лаконичный синтаксис и убирание многого шаблонного кода.
+
+```fish
+#!/usr/bin/env fish
+
+argparse f/filename= -- $argv
+if not set -ql _flag_filename
+    echo "Error: filename expected" >&2
+    return 1
+end
+set filename _flag_filename
+
+sudo chmod +x "$filename"
+sudo mv "$filename" /usr/bin/
+```
+
+
+# task 6
+
+## task
+
+Написать программу для проверки наличия комментария в первой строке файлов с расширением c, js и py.
+
+
+## solution
+
+```fish
+#!/usr/bin/env fish
+
+argparse p/path= -- $argv
+if not set -ql _flag_path
+    echo "Error: filename expected" >&2
+    return 1
+end
+set path "$_flag_path"
+set extension (path extension "$path")
+
+set single_pattern
+set multi_pattern
+
+read -l line < "$path"
+switch "$extension"
+case '.c' '.js'
+    set single_pattern "^\s*//"
+    set multi_pattern "^\s*/\*"
+case '.py'
+    set single_pattern "^\s*#"
+    set multi_pattern "^\s*(?:'''|\"\"\")"
+end
+
+set single_line_comment "$(string match -r "$single_pattern" "$line")"
+set multi_line_comment "$(string match -r "$multi_pattern" "$line")"
+
+if test -n "$single_line_comment" -o -n "$multi_line_comment"
+    echo "Starts with a comment"
+    return
+end
+
+echo "Does not start with a comment"
+```
+
+
+# task 7
+
+## task
+
+

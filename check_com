@@ -1,0 +1,32 @@
+#!/usr/bin/env fish
+
+argparse p/path= -- $argv
+if not set -ql _flag_path
+    echo "Error: filename expected" >&2
+    return 1
+end
+set path "$_flag_path"
+set extension (path extension "$path")
+
+set single_pattern
+set multi_pattern
+
+read -l line < "$path"
+switch "$extension"
+case '.c' '.js'
+    set single_pattern "^\s*//"
+    set multi_pattern "^\s*/\*"
+case '.py'
+    set single_pattern "^\s*#"
+    set multi_pattern "^\s*(?:'''|\"\"\")"
+end
+
+set single_line_comment "$(string match -r "$single_pattern" "$line")"
+set multi_line_comment "$(string match -r "$multi_pattern" "$line")"
+
+if test -n "$single_line_comment" -o -n "$multi_line_comment"
+    echo "Starts with a comment"
+    return
+end
+
+echo "Does not start with a comment"
