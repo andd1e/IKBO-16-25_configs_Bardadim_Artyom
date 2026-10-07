@@ -1,0 +1,61 @@
+#!/usr/bin/env fish
+
+function extract_archive_name
+    set paths $argv
+    if test (count $paths) -eq 1
+        set basename (path basename "$paths[1]")
+        if test -z "$(string replace -r '\.+' '' "$basename")"
+            set basename "archive"
+        end
+        echo "$basename.tar"
+        return
+    end
+
+    set basename "archive.tar"
+    echo "$basename"
+end
+
+function collect_files
+    set ext $argv[1]
+    set paths $argv[2..]
+
+    set files
+    for path in $paths
+        set files $files (find "$path" -type f -name "*.$ext")
+    end
+    printf "%s\n" $files
+end
+
+function tar_files
+    set archive $argv[1]
+    set files $argv[2..]
+
+    tar -cf "$archive" -- $files
+end
+
+
+argparse e/extension= a/archive-name= -- $argv
+or return 1
+
+if not set -ql _flag_extension
+    echo "Error: extension expected" >&2
+    return 1
+end
+set ext "$_flag_extension"
+
+set paths $argv
+if test (count $paths) -eq 0
+    echo "Error: at least one path expected" >&2
+    return 1
+end
+
+if set -ql _flag_archive_name
+    set archive "$_flag_archive_name"
+else
+    set archive "$(extract_archive_name $paths)"
+    echo "Using default archive name, '$archive'"
+end
+
+
+set files (collect_files "$ext" $paths)
+tar_files "$archive" $files

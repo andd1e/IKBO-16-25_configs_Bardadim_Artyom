@@ -1,6 +1,7 @@
 #!/usr/bin/env fish
 
 argparse f/filename= -- $argv
+or return 1
 if not set -ql _flag_filename
     echo "Error: filename expected" >&2
     return 1

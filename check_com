@@ -1,8 +1,9 @@
 #!/usr/bin/env fish
 
 argparse p/path= -- $argv
+or return 1
 if not set -ql _flag_path
-    echo "Error: filename expected" >&2
+    echo "Error: path expected" >&2
     return 1
 end
 set path "$_flag_path"
