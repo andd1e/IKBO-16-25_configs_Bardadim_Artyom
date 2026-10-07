@@ -268,7 +268,7 @@ h hello include int main n printf return stdio void world
 
 ## solution
 
-identifier:
+identifiers:
 ```bash
 #!/bin/env bash
 
@@ -316,6 +316,7 @@ include iostream int main std cout std endl return
 
 В качестве командной оболочки была выбрана `fish` за более лаконичный синтаксис и убирание многого шаблонного кода.
 
+reg:
 ```fish
 #!/usr/bin/env fish
 
@@ -328,7 +329,7 @@ end
 set filename _flag_filename
 
 sudo chmod +x "$filename"
-sudo mv "$filename" /usr/bin/
+sudo mv "$filename" /usr/local/bin/
 ```
 
 
@@ -341,6 +342,7 @@ sudo mv "$filename" /usr/bin/
 
 ## solution
 
+check_com:
 ```fish
 #!/usr/bin/env fish
 
@@ -387,6 +389,7 @@ echo "Does not start with a comment"
 
 ## solution
 
+check_dup:
 ```fish
 #!/usr/bin/env fish
 

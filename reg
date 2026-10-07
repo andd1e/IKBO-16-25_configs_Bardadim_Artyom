@@ -9,4 +9,4 @@ end
 set filename _flag_filename
 
 sudo chmod +x "$filename"
-sudo mv "$filename" /usr/bin/
+sudo mv "$filename" /usr/local/bin/
