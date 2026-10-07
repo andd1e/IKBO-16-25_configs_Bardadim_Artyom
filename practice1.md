@@ -526,6 +526,7 @@ Using default archive name, 'test_dir_ext.tar'
 
 ## solution
 
+replace_spaces:
 ```fish
 #!/usr/bin/env fish
 
@@ -569,4 +570,56 @@ int main()$
 {$
 ^Ireturn 0;$
 }$
+```
+
+
+# task 10
+
+## task
+
+Написать программу, которая выводит названия всех пустых текстовых файлов в указанной директории. Директория передается в программу параметром.
+
+
+## solution
+
+```fish
+#!/usr/bin/env fish
+
+argparse p/path= -- $argv
+or return 1
+
+if not set -ql _flag_path
+    echo "Error: path expected" >&2
+    return 1
+end
+set path "$_flag_path"
+
+if not test -d "$path"
+    echo "Error: '$path' is not a directory" >&2
+    return 1
+end
+
+set result (find "$path" -maxdepth 1 -type f -empty -printf "%f\n" | sort)
+
+if test -z "$result"
+    echo "No empty files found"
+    return
+end
+
+printf "%s\n" $result
+```
+
+```bash
+./find_empty -p test_dir_empty
+```
+```
+e1
+e2
+```
+
+```bash
+./find_empty -p test_dir_empty/sub
+```
+```
+No empty files found
 ```
