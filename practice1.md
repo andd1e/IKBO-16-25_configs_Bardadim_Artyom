@@ -320,6 +320,7 @@ include iostream int main std cout std endl return
 #!/usr/bin/env fish
 
 argparse f/filename= -- $argv
+or return 1
 if not set -ql _flag_filename
     echo "Error: filename expected" >&2
     return 1
@@ -344,8 +345,9 @@ sudo mv "$filename" /usr/bin/
 #!/usr/bin/env fish
 
 argparse p/path= -- $argv
+or return 1
 if not set -ql _flag_path
-    echo "Error: filename expected" >&2
+    echo "Error: path expected" >&2
     return 1
 end
 set path "$_flag_path"
@@ -380,4 +382,136 @@ echo "Does not start with a comment"
 
 ## task
 
+Написать программу для нахождения файлов-дубликатов (имеющих 1 или более копий содержимого) по заданному пути (и подкаталогам).
 
+
+## solution
+
+```fish
+#!/usr/bin/env fish
+
+argparse p/path= -- $argv
+or return 1
+
+if not set -ql _flag_path
+    echo "Error: path expected" >&2
+    return 1
+end
+set path "$_flag_path"
+
+if not test -d "$path"
+    echo "Error: '$path' is not a directory" >&2
+    return 1
+end
+
+
+set result (find "$path" -type f -exec sha256sum {} + | sort | uniq -dw64)
+
+if test -z "$result"
+    echo "No duplicates found"
+    return
+end
+
+printf "%s\n" $result
+```
+
+
+# task 8
+
+## task
+
+Написать программу, которая находит все файлы в данном каталоге с расширением, указанным в качестве аргумента и архивирует все эти файлы в архив tar.
+
+## solution
+
+```fish
+#!/usr/bin/env fish
+
+function extract_archive_name
+    set paths $argv
+    if test (count $paths) -eq 1
+        set basename (path basename "$paths[1]")
+        if test -z "$(string replace -r '\.+' '' "$basename")"
+            set basename "archive"
+        end
+        echo "$basename.tar"
+        return
+    end
+
+    set basename "archive.tar"
+    echo "$basename"
+end
+
+function collect_files
+    set ext $argv[1]
+    set paths $argv[2..]
+
+    set files
+    for path in $paths
+        set files $files (find "$path" -type f -name "*.$ext")
+    end
+    printf "%s\n" $files
+end
+
+function tar_files
+    set archive $argv[1]
+    set files $argv[2..]
+
+    tar -cf "$archive" -- $files
+end
+
+
+argparse e/extension= a/archive-name= -- $argv
+or return 1
+
+if not set -ql _flag_extension
+    echo "Error: extension expected" >&2
+    return 1
+end
+set ext "$_flag_extension"
+
+set paths $argv
+if test (count $paths) -eq 0
+    echo "Error: at least one path expected" >&2
+    return 1
+end
+
+if set -ql _flag_archive_name
+    set archive "$_flag_archive_name"
+else
+    set archive "$(extract_archive_name $paths)"
+    echo "Using default archive name, '$archive'"
+end
+
+
+set files (collect_files "$ext" $paths)
+tar_files "$archive" $files
+```
+
+```bash
+find test_dir_ext
+```
+```
+test_dir_ext
+test_dir_ext/a.txt
+test_dir_ext/c.md
+test_dir_ext/sub
+test_dir_ext/sub/b.txt
+```
+
+```bash
+./archive_ext -e txt -a out.tar test_dir_ext
+tar -tf out.tar
+```
+```
+test_dir_ext/sub/b.txt
+test_dir_ext/a.txt
+```
+
+без флага `-a` имя архива берется из имени каталога:
+```bash
+./archive_ext -e txt test_dir_ext
+```
+```
+Using default archive name, 'test_dir_ext.tar'
+```
