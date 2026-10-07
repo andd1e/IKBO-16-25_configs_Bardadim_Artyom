@@ -515,3 +515,58 @@ test_dir_ext/a.txt
 ```
 Using default archive name, 'test_dir_ext.tar'
 ```
+
+
+# task 9
+
+## task
+
+Написать программу, которая заменяет в файле последовательности из 4 пробелов на символ табуляции. Входной и выходной файлы задаются аргументами.
+
+
+## solution
+
+```fish
+#!/usr/bin/env fish
+
+argparse i/input= o/output= -- $argv
+or return 1
+
+if not set -ql _flag_input
+    echo "Error: input file expected" >&2
+    return 1
+end
+set input "$_flag_input"
+
+if not set -ql _flag_output
+    echo "Error: output file expected" >&2
+    return 1
+end
+set output "$_flag_output"
+
+if not test -f "$input"
+    echo "Error: '$input' is not a file" >&2
+    return 1
+end
+
+sed 's/    /\t/g' "$input" > "$output"
+```
+
+in.c:
+```c
+int main()
+{
+    return 0;
+}
+```
+
+```bash
+./replace_spaces -i in.c -o out.c
+cat -A out.c
+```
+```
+int main()$
+{$
+^Ireturn 0;$
+}$
+```

@@ -1,0 +1,23 @@
+#!/usr/bin/env fish
+
+argparse i/input= o/output= -- $argv
+or return 1
+
+if not set -ql _flag_input
+    echo "Error: input file expected" >&2
+    return 1
+end
+set input "$_flag_input"
+
+if not set -ql _flag_output
+    echo "Error: output file expected" >&2
+    return 1
+end
+set output "$_flag_output"
+
+if not test -f "$input"
+    echo "Error: '$input' is not a file" >&2
+    return 1
+end
+
+sed 's/    /\t/g' "$input" > "$output"
